@@ -2,7 +2,7 @@
 name = "rv-decoder"
 version = "0.1.0"
 edition = "2021"
-license = "BSD 3-Clause"
+license = "BSD-3-Clause"
 author = ["Suhas Kudlur Viswanath <suhaskv0111@gmail.com>"]
 description = "A RISC-V instruction decoder"
 
