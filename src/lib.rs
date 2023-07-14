@@ -408,40 +408,100 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("SUB x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
                         }
+                        "0000001" => {      // Multiply signed rs1 and rs2
+                            println!("Multiplication (MUL) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two value: {}", rs2_bits);
+                            println!("MUL x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
                         &_ => todo!()
                     }
                 }
-                "001" => {      // Shift left logical
-                    println!("Shift Left Logical (SLL) instruction decoded");
-                    println!("Destination Register address: x{}", rd_bits);
-                    println!("Register One address: x{}", rs1_bits);
-                    println!("Register Two value: {}", rs2_bits);
-                    println!("SLL x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
-                    println!("--------------------------------");
+                "001" => {      
+                    match funct7_slice_joined.as_str() {
+                        "0000000" => {      // Shift left logical
+                            println!("Shift Left Logical (SLL) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two value: {}", rs2_bits);
+                            println!("SLL x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
+                        "0000001" => {      // Multiply high signed rs1 and rs2
+                            println!("Multiply High Signed (MULH) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two value: {}", rs2_bits);
+                            println!("MULH x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
+                        &_ => todo!()
+                    }
                 }
-                "010" => {      // Set less than
-                    println!("Set less than (SLT) instruction decoded");
-                    println!("Destination Register address: x{}", rd_bits);
-                    println!("Register One address: x{}", rs1_bits);
-                    println!("Register Two value: {}", rs2_bits);
-                    println!("SLT x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
-                    println!("--------------------------------");
+                "010" => {      
+                    match funct7_slice_joined.as_str() {
+                        "0000000" => {      // Set less than
+                            println!("Set less than (SLT) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two value: {}", rs2_bits);
+                            println!("SLT x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
+                        "0000001" => {      // Multiply signed rs1 and unsigned rs2
+                            println!("Multiply High Unsigned with signed (MULHSU) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two value: {}", rs2_bits);
+                            println!("MULHSU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
+                        &_ => todo!()
+                    }
                 }
-                "011" => {      // Set less than unsigned
-                    println!("Set less than unsigned (SLTU) instruction decoded");
-                    println!("Destination Register address: x{}", rd_bits);
-                    println!("Register One address: x{}", rs1_bits);
-                    println!("Register Two value: {}", rs2_bits);
-                    println!("SLTU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
-                    println!("--------------------------------");
+                "011" => {      
+                    match funct7_slice_joined.as_str() {
+                        "0000000" => {      // Set less than unsigned
+                            println!("Set less than unsigned (SLTU) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two value: {}", rs2_bits);
+                            println!("SLTU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
+                        "0000001" => {      // Multiply unsigned rs1 and rs2
+                            println!("Multiply High Unsigned (MULHU) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two value: {}", rs2_bits);
+                            println!("MULHU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
+                        &_ => todo!()
+                    }
                 }
-                "100" => {      // XOR
-                    println!("XOR instruction decoded");
-                    println!("Destination Register address: x{}", rd_bits);
-                    println!("Register One address: x{}", rs1_bits);
-                    println!("Register Two value: {}", rs2_bits);
-                    println!("XOR x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
-                    println!("--------------------------------");
+                "100" => {      
+                    match funct7_slice_joined.as_str() {
+                        "0000000" => {      // XOR
+                            println!("XOR instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two value: {}", rs2_bits);
+                            println!("XOR x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
+                        "0000001" => {      // Divide signed rs1 and rs2 (rounding towards zero)
+                            println!("Divide Signed (DIV) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two address: x{}", rs2_bits);
+                            println!("DIV x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
+                        &_ => todo!()
+                    }
                 }
                 "101" => {      // Shift right
                     match funct7_slice_joined.as_str() {
@@ -451,6 +511,14 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register One address: x{}", rs1_bits);
                             println!("Register Two value: {}", rs2_bits);
                             println!("SRL x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
+                        "0000001" => {      // Divide unsigned rs1 and rs2 (rounding towards zero)
+                            println!("Divide Unsigned (DIVU) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two address: x{}", rs2_bits);
+                            println!("DIVU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
                         }
                         "0100000" => {      // Shift right arithmetic
@@ -464,21 +532,47 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                         &_ => todo!()
                     }
                 }
-                "110" => {      // OR
-                    println!("OR instruction decoded");
-                    println!("Destination Register address: x{}", rd_bits);
-                    println!("Register One address: x{}", rs1_bits);
-                    println!("Register Two value: {}", rs2_bits);
-                    println!("OR x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
-                    println!("--------------------------------");
+                "110" => {      
+                    match funct7_slice_joined.as_str() {
+                        "0000000" => {      // OR
+                            println!("OR instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two value: {}", rs2_bits);
+                            println!("OR x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
+                        "0000001" => {      // Remainder signed rs1 and rs2
+                            println!("Remainder Signed (REM) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two address: x{}", rs2_bits);
+                            println!("REM x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
+                        &_ => todo!()
+                    }
                 }
-                "111" => {      // AND
-                    println!("AND instruction decoded");
-                    println!("Destination Register address: x{}", rd_bits);
-                    println!("Register One address: x{}", rs1_bits);
-                    println!("Register Two value: {}", rs2_bits);
-                    println!("AND x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
-                    println!("--------------------------------");
+                "111" => {      
+                    match funct7_slice_joined.as_str() {
+                        "0000000" => {      // AND
+                            println!("AND instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two value: {}", rs2_bits);
+                            println!("AND x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
+                        "0000001" => {      // Remainder unsigned rs1 and rs2
+                            println!("Remainder Unsigned (REMU) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("Register Two address: x{}", rs2_bits);
+                            println!("REMU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                        }
+                        &_ => todo!()
+                    }
                 }
             &_ => todo!()
             }
