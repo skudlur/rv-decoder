@@ -11,12 +11,47 @@
 pub fn instruction_decoder(instr: Vec<&str>) {
     /*
      * This decoder is based on the RISC-V Unprivileged Spec v2.2
-     */
-    /*
+     *
      * Instruction breakdown
-     * 31 --------------------------------6------0
-     * 0----------------------------------25------31
-     * /                                  /opcode/
+     * RV32I Base Instruction Set`
+     *
+     * R-type 
+     * 31------25 24-----20 19-----15 14-----12 11-----7 6-------0
+     * /func7/     /rs2/     /rs1/     /func3/     /rd/   /opcode/
+     * 0-------6 7-----11 12-----16 17--------19 20-----24 25--------31
+     * /func7/    /rs2/     /rs1/     /func3/      /rd/      /opcode/
+     *  
+     * I-type
+     * 31------20 19-----15 14--------12 11-----7 6-------0
+     * /imm[11:0]/  /rs1/     /func3/     /rd/   /opcode/
+     * 0----------11 12-----16 17-------19 20-----24 25-------31
+     * /imm[11:0]/     /rs1/     /func3/     /rd/      /opcode/ 
+     * 
+     * S-type
+     * 31------25 24-----20 19-----15 14--------12 11---------7 6--------0
+     * /imm[11:5]/  /rs2/     /rs1/     /func3/     /imm[4:0]/   /opcode/
+     * 0----------6 7------11 12-----16 17--------19 20----------24 25--------31
+     * /imm[11:5]/   /rs2/      /rs1/     /func3/      /imm[4:0]/     /opcode/
+     * 
+     * B-type
+     * 31-----------25 24-----20 19-----15 14-------12 11-------------7 6--------0
+     * /imm[12|10:5]/    /rs2/     /rs1/     /func3/     /imm[4:1|11]/   /opcode/
+     * 0--------------6 7------11 12-----16 17--------19 20-------------24 25--------31
+     * /imm[12|10:5]/     /rs2/      /rs1/     /func3/      /imm[4:1|11]/     /opcode/
+     * 
+     * U-type
+     * 31-----------12 11-----7 6--------0
+     * /imm[31:12]/      /rd/    /opcode/
+     * 0------------19 20------24 25--------31
+     * /imm[31:12]/       /rd/      /opcode/
+     * 
+     * J-type
+     * 31---------------------12 11-----7 6---------0
+     * /imm[20|10:1|11|19:12]/     /rd/    /opcode/
+     * 0-----------------------19 20-----24 25--------31
+     * /imm[20|10:1|11|19:12]/      /rd/      /opcode/
+     *  
+     *                               
      */
 
     let opcode_slice = &instr[25..];    // opcode field
@@ -164,6 +199,40 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                 }
             &_ => todo!()
             }
+        }
+
+        "1100011" =>{
+            let funct3_slice = &instr[17..20];
+            let funct3_slice_joined = funct3_slice.join("");
+            let rs1_slice = &instr[12..17];
+            let rs1_slice_joined = rs1_slice.join("");
+            let rs2_slice = &instr[7..12];
+            let rs2_slice_joined = rs2_slice.join("");
+            let mut imm_slice = &instr[0..7];
+            let mut imm_slice_joined = imm_slice.join("");
+            let imm2_slice = &instr[20..25];
+            let imm2_slice_joined = imm2_slice.join("");
+
+            imm_slice_joined = imm_slice_joined + &imm2_slice_joined;
+            let rs1_bits = i32::from_str_radix(&rs1_slice_joined, 2).unwrap();
+            let rs2_bits = i32::from_str_radix(&rs2_slice_joined, 2).unwrap();
+            let mut imm_bits = i32::from_str_radix(&imm_slice_joined, 2).unwrap();
+
+            // Immediate generator/handler
+            if imm_slice[0] == "1" {
+                let mut x = 1;
+                loop {
+                    let mut twos = i32::pow(2, x);
+                    if (imm_bits as f32)/(twos as f32) < 1.0 {
+                        imm_bits = imm_bits - twos;
+                        break;
+                    }
+                    else {
+                        x = x + 1;
+                    }
+                }
+            }
+
         }
 
         "0010011" => {      // Immediate type instructions
