@@ -8,7 +8,16 @@
 /// instr = ["1", "1", "1", "1", "1", "1", "1", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "0", "0", "0", "0", "1", "0", "0", "0", "1", "0", "0", "1", "1"];
 /// assert_eq!("Add Immediate (ADDI) instruction decoded", rv_decoder::instruction_decoder(instr));
 
-pub fn instruction_decoder(instr: Vec<&str>) {
+pub fn convert_binary_string_to_vector(binary_string: &str) -> Vec<String> {
+    let mut vector = Vec::new();
+    for i in 0..binary_string.len() {
+      vector.push(binary_string.chars().nth(i).unwrap().to_string());
+    }
+    return vector;
+  }
+
+
+pub fn instruction_decoder(instr: Vec<String>) -> String {
     /*
      * This decoder is based on the RISC-V Unprivileged Spec v2.2
      */
@@ -62,6 +71,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("LB x{}, {}(x{})", rd_bits, imm_bits, rs1_bits);
                     println!("--------------------------------");
+                    return format!("LB x{}, {}(x{})", rd_bits, imm_bits, rs1_bits);
                 }
                 "001" => {      // Load Half-word (16-bits)
                     println!("Load Half-word (LH) instruction decoded");
@@ -70,6 +80,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("LH x{}, {}(x{})", rd_bits, imm_bits, rs1_bits);
                     println!("--------------------------------");
+                    return format!("LH x{}, {}(x{})", rd_bits, imm_bits, rs1_bits);
                 }
                 "010" => {      // Load Word (32-bits)
                     println!("Load Word (LW) instruction decoded");
@@ -78,6 +89,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("LW x{}, {}(x{})", rd_bits, imm_bits, rs1_bits);
                     println!("--------------------------------");
+                    return format!("LW x{}, {}(x{})", rd_bits, imm_bits, rs1_bits);
                 }
                 "100" => {      // Load Byte Unsigned (u8-bits)
                     println!("Load Byte Unsigned (LBU) instruction decoded");
@@ -86,6 +98,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("LBU x{}, {}(x{})", rd_bits, imm_bits, rs1_bits);
                     println!("--------------------------------");
+                    return format!("LBU x{}, {}(x{})", rd_bits, imm_bits, rs1_bits);
                 }
                 "101" => {      // Load Half-word Unsigned (u16-bits)
                     println!("Load Half-word Unsigned (LHU) instruction decoded");
@@ -94,6 +107,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("LHU x{}, {}(x{})", rd_bits, imm_bits, rs1_bits);
                     println!("--------------------------------");
+                    return format!("LHU x{}, {}(x{})", rd_bits, imm_bits, rs1_bits);
                 }
                 default => {
                     panic!("Instruction format error!");
@@ -142,6 +156,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("SB x{}, {}(x{})", rs2_bits, imm_bits, rs1_bits);
                     println!("--------------------------------");
+                    return format!("SB x{}, {}(x{})", rs2_bits, imm_bits, rs1_bits);
                 }
                 "001" => {      // Store Half-word (16-bit)
                     println!("Store Half-word (SH) instruction decoded");
@@ -150,6 +165,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("SH x{}, {}(x{})", rs2_bits, imm_bits, rs1_bits);
                     println!("--------------------------------");
+                    return format!("SH x{}, {}(x{})", rs2_bits, imm_bits, rs1_bits);
                 }
                 "010" => {      // Store Word (32-bit)
                     println!("Store Word (SW) instruction decoded");
@@ -158,6 +174,105 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("SW x{}, {}(x{})", rs2_bits, imm_bits, rs1_bits);
                     println!("--------------------------------");
+                    return format!("SW x{}, {}(x{})", rs2_bits, imm_bits, rs1_bits);
+                }
+                default => {
+                    panic!("Instruction format error!");
+                }
+            &_ => todo!()
+            }
+        }
+
+        "1100011" =>{
+            let funct3_slice = &instr[17..20];
+            let funct3_slice_joined = funct3_slice.join("");
+            let rs1_slice = &instr[12..17];
+            let rs1_slice_joined = rs1_slice.join("");
+            let rs2_slice = &instr[7..12];
+            let rs2_slice_joined = rs2_slice.join("");
+            let imm1_slice = &instr[0..7];
+            let imm2_slice = &instr[20..25];
+            let imm_slice_1 = imm1_slice[0].to_string(); // imm [12]
+            let imm_slice_2 = &imm1_slice[1..7]; // imm [10:5]
+            let imm_slice_2_joined = imm_slice_2.join("");
+            let imm_slice_3 = &imm2_slice[0..4]; // imm [4:1]
+            let imm_slice_3_joined = imm_slice_3.join("");
+            let imm_slice_4 = imm2_slice[4].to_string(); // imm [11]
+            let mut imm_final = imm_slice_3_joined + &imm_slice_2_joined + &imm_slice_4 + &imm_slice_1;
+
+            let rs1_bits = i32::from_str_radix(&rs1_slice_joined, 2).unwrap();
+            let rs2_bits = i32::from_str_radix(&rs2_slice_joined, 2).unwrap();
+            let mut imm_bits = i32::from_str_radix(&imm_final, 2).unwrap();
+
+            // Immediate generator/handler
+            if imm_slice_1 == "1" {
+                let mut x = 1;
+                loop {
+                    let mut twos = i32::pow(2, x);
+                    if (imm_bits as f32)/(twos as f32) < 1.0 {
+                        imm_bits = imm_bits - twos;
+                        break;
+                    }
+                    else {
+                        x = x + 1;
+                    }
+                }
+            }
+
+            match funct3_slice_joined.as_str() {
+                "000" => {      // Branch Equal
+                    println!("Branch Equal (BEQ) instruction decoded");
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("Immediate value: {}", imm_bits);
+                    println!("BEQ x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                    println!("--------------------------------");
+                    return format!("BEQ x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                }
+                "001" => {      // Branch Not Equal
+                    println!("Branch Not Equal (BNE) instruction decoded");
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("Immediate value: {}", imm_bits);
+                    println!("BNE x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                    println!("--------------------------------");
+                    return format!("BNE x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                }
+                "100" => {      // Branch Less Than
+                    println!("Branch Less Than (BLT) instruction decoded");
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("Immediate value: {}", imm_bits);
+                    println!("BLT x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                    println!("--------------------------------");
+                    return format!("BLT x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                }
+                "101" => {      // Branch Greater Than or Equal
+                    println!("Branch Greater Than or Equal (BGE) instruction decoded");
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("Immediate value: {}", imm_bits);
+                    println!("BGE x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                    println!("--------------------------------");
+                    return format!("BGE x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                }
+                "110" => {      // Branch Less Than Unsigned
+                    println!("Branch Less Than Unsigned (BLTU) instruction decoded");
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("Immediate value: {}", imm_bits);
+                    println!("BLTU x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                    println!("--------------------------------");
+                    return format!("BLTU x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                }
+                "111" => {      // Branch Greater Than or Equal Unsigned
+                    println!("Branch Greater Than or Equal Unsigned (BGEU) instruction decoded");
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("Immediate value: {}", imm_bits);
+                    println!("BGEU x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                    println!("--------------------------------");
+                    return format!("BGEU x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
                 }
                 default => {
                     panic!("Instruction format error!");
@@ -203,6 +318,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("ADDI x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
                     println!("--------------------------------");
+                    return format!("ADDI x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
                 }
                 "010" => {      // Set less than immediate
                     println!("Set less than Immediate (SLTI) instruction decoded");
@@ -211,6 +327,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("SLTI x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
                     println!("--------------------------------");
+                    return format!("SLTI x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
                 }
                 "011" => {      // Set less than immediate unsigned
                     println!("Set less than Immediate unsigned (SLTIU) instruction decoded");
@@ -219,6 +336,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("SLTIU x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
                     println!("--------------------------------");
+                    return format!("SLTIU x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
                 }
                 "100" => {      // XOR Immediate
                     println!("XOR Immediate (XORI) instruction decoded");
@@ -227,6 +345,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("XORI x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
                     println!("--------------------------------");
+                    return format!("XORI x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
                 }
                 "110" => {      // OR Immediate
                     println!("OR Immediate (ORI) instruction decoded");
@@ -235,6 +354,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("ORI x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
                     println!("--------------------------------");
+                    return format!("ORI x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
                 }
                 "111" => {      // AND Immediate
                     println!("AND Immediate (ANDI) instruction decoded");
@@ -243,6 +363,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                     println!("Immediate value: {}", imm_bits);
                     println!("ANDI x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
                     println!("--------------------------------");
+                    return format!("ANDI x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
                 }
                 default => {
                     panic!("Instruction format error!");
@@ -280,6 +401,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
             println!("Immediate address: x{}", imm_bits);
             println!("LUI x{}, {}", rd_bits, imm_bits);
             println!("--------------------------------");
+            return format!("LUI x{}, {}", rd_bits, imm_bits);
         }
 
         "0010111" => {      // Add upper immediate with PC
@@ -311,6 +433,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
             println!("Immediate address: x{}", imm_bits);
             println!("AUIPC x{}, {}", rd_bits, imm_bits);
             println!("--------------------------------");
+            return format!("AUIPC x{}, {}", rd_bits, imm_bits);
         }
 
         "1101111" => {      // Jump and link
@@ -336,6 +459,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
             println!("Immediate address: x{}", imm_bits);
             println!("JAL x{}, {}", rd_bits, imm_bits);
             println!("--------------------------------");
+            return format!("JAL x{}, {}", rd_bits, imm_bits);
         }
 
         "1100111" => {      // Jump and link to register
@@ -371,6 +495,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
             println!("Immediate value: {}", imm_bits);
             println!("JALR x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
             println!("--------------------------------");
+            return format!("JALR x{}, x{}, {}", rd_bits, rs1_bits, imm_bits);
         }
 
         "0110011" => {      // Arithmetic instructions
@@ -399,6 +524,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("ADD x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("ADD x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         "0100000" => {      // Sub
                             println!("Subtraction (SUB) instruction decoded");
@@ -407,6 +533,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("SUB x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("SUB x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         "0000001" => {      // Multiply signed rs1 and rs2
                             println!("Multiplication (MUL) instruction decoded");
@@ -415,6 +542,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("MUL x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("MUL x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         &_ => todo!()
                     }
@@ -428,6 +556,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("SLL x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("SLL x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         "0000001" => {      // Multiply high signed rs1 and rs2
                             println!("Multiply High Signed (MULH) instruction decoded");
@@ -436,6 +565,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("MULH x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("MULH x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         &_ => todo!()
                     }
@@ -449,6 +579,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("SLT x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("SLT x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         "0000001" => {      // Multiply signed rs1 and unsigned rs2
                             println!("Multiply High Unsigned with signed (MULHSU) instruction decoded");
@@ -457,6 +588,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("MULHSU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("MULHSU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         &_ => todo!()
                     }
@@ -470,6 +602,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("SLTU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("SLTU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         "0000001" => {      // Multiply unsigned rs1 and rs2
                             println!("Multiply High Unsigned (MULHU) instruction decoded");
@@ -478,6 +611,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("MULHU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("MULHU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         &_ => todo!()
                     }
@@ -491,6 +625,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("XOR x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("XOR x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         "0000001" => {      // Divide signed rs1 and rs2 (rounding towards zero)
                             println!("Divide Signed (DIV) instruction decoded");
@@ -499,6 +634,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two address: x{}", rs2_bits);
                             println!("DIV x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("DIV x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         &_ => todo!()
                     }
@@ -512,6 +648,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("SRL x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("SRL x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         "0000001" => {      // Divide unsigned rs1 and rs2 (rounding towards zero)
                             println!("Divide Unsigned (DIVU) instruction decoded");
@@ -520,6 +657,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two address: x{}", rs2_bits);
                             println!("DIVU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("DIVU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         "0100000" => {      // Shift right arithmetic
                             println!("Shift Right Arithmetic (SRA) instruction decoded");
@@ -528,6 +666,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("SRA x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("SRA x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         &_ => todo!()
                     }
@@ -541,6 +680,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("OR x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("OR x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         "0000001" => {      // Remainder signed rs1 and rs2
                             println!("Remainder Signed (REM) instruction decoded");
@@ -549,6 +689,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two address: x{}", rs2_bits);
                             println!("REM x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("REM x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         &_ => todo!()
                     }
@@ -562,6 +703,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two value: {}", rs2_bits);
                             println!("AND x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("AND x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         "0000001" => {      // Remainder unsigned rs1 and rs2
                             println!("Remainder Unsigned (REMU) instruction decoded");
@@ -570,6 +712,7 @@ pub fn instruction_decoder(instr: Vec<&str>) {
                             println!("Register Two address: x{}", rs2_bits);
                             println!("REMU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                             println!("--------------------------------");
+                            return format!("REMU x{}, x{}, x{}", rd_bits, rs1_bits, rs2_bits);
                         }
                         &_ => todo!()
                     }
