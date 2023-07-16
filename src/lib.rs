@@ -341,24 +341,31 @@ pub fn instruction_decoder(instr: Vec<String>) -> String {
         "1101111" => {      // Jump and link
             let rd_slice = &instr[20..25];
             let rd_slice_joined = rd_slice.join("");
-            let imm_slice = &instr[0..20];
-            let imm_slice_joined = imm_slice.join("");
-            let imm_slice_1 = imm_slice[0].to_string();        // imm[19]
-            //let imm_slice_1_joined = imm_slice_1.join("");
-            let imm_slice_2 = &imm_slice[1..10];    // imm[7:0]
-            let imm_slice_2_joined = imm_slice_2.join("");
-            let imm_slice_3 = imm_slice[10].to_string();       // imm[8]
-           // let imm_slice_3_joined = imm_slice_3.join("");
-            let imm_slice_4 = &imm_slice[11..20];   // imm[18:9]
-            let imm_slice_4_joined = imm_slice_4.join("");
-            let mut imm_final = imm_slice_2_joined + &imm_slice_3 + &imm_slice_4_joined + &imm_slice_1;
+            let imm_slice = &instr[0..20];                      // imm[20:1]
+            let mut imm_slice_offset = &imm_slice[0..12];
+            let imm_slice_joined = imm_slice_offset.join("");
 
             let rd_bits = u32::from_str_radix(&rd_slice_joined, 2).unwrap();
-            let mut imm_bits = i32::from_str_radix(&imm_final, 2).unwrap();
+            let mut imm_bits = i32::from_str_radix(&imm_slice_joined, 2).unwrap();
+
+            // Immediate generator/handler
+            if imm_slice[0] == "1" {
+                let mut x = 1;
+                loop {
+                    let mut twos = i32::pow(2, x);
+                    if  (imm_bits as f32)/(twos as f32) < 1.0 {
+                        imm_bits = imm_bits - twos;
+                        break;
+                    }
+                    else {
+                        x = x + 1;
+                    }
+                }
+            }
 
             println!("Jump and Link (JAL) instruction decoded");
             println!("Destination Register address: x{}", rd_bits);
-            println!("Immediate address: x{}", imm_bits);
+            println!("Immediate address: {}", imm_bits);
             println!("JAL x{}, {}", rd_bits, imm_bits);
             println!("--------------------------------");
             return format!("JAL x{}, {}", rd_bits, imm_bits);
