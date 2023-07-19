@@ -1,5 +1,5 @@
-use rv_decoder::instruction_decoder;
 use rv_decoder::convert_binary_string_to_vector;
+use rv_decoder::instruction_decoder;
 
 #[cfg(test)]
 mod tests {
@@ -8,12 +8,12 @@ mod tests {
 
     #[test]
     fn load_instructions() {
-        //Load Byte  
+        //Load Byte
         let binary_instruction = "00000000010000000000001000000011";
         let instr = convert_binary_string_to_vector(binary_instruction);
         let expected = "LB x4, 4(x0)";
         let result = instruction_decoder(instr);
-        assert_eq!(result,expected);
+        assert_eq!(result, expected);
 
         // Load Halfword
         let binary_instruction = "00000000010000000001000100000011";
@@ -97,7 +97,7 @@ mod tests {
         let expected = "XORI x15, x1, -50";
         let result = instruction_decoder(instr);
         assert_eq!(result, expected);
-        
+
         // OR Immediate
         let binary_instruction = "11111100111000001110011110010011";
         let instr = convert_binary_string_to_vector(binary_instruction);
@@ -167,13 +167,6 @@ mod tests {
         let result = instruction_decoder(instr);
         assert_eq!(result, expected);
 
-        // Multiply
-        let binary_instruction = "00000010001100010000000010110011";
-        let instr = convert_binary_string_to_vector(binary_instruction);
-        let expected = "MUL x1, x2, x3";
-        let result = instruction_decoder(instr);
-        assert_eq!(result, expected);
-
         // Shift Left Logical
         let binary_instruction = "00000000001100010001000010110011";
         let instr = convert_binary_string_to_vector(binary_instruction);
@@ -181,24 +174,10 @@ mod tests {
         let result = instruction_decoder(instr);
         assert_eq!(result, expected);
 
-        // Multiply High Signed
-        let binary_instruction = "00000010001100010001000010110011";
-        let instr = convert_binary_string_to_vector(binary_instruction);
-        let expected = "MULH x1, x2, x3";
-        let result = instruction_decoder(instr);
-        assert_eq!(result, expected);
-
-        // Set Less Than 
+        // Set Less Than
         let binary_instruction = "00000000001100010010000010110011";
         let instr = convert_binary_string_to_vector(binary_instruction);
         let expected = "SLT x1, x2, x3";
-        let result = instruction_decoder(instr);
-        assert_eq!(result, expected);
-
-        // Multiply signed and unsigned
-        let binary_instruction = "00000010001100010010000010110011";
-        let instr = convert_binary_string_to_vector(binary_instruction);
-        let expected = "MULHSU x1, x2, x3";
         let result = instruction_decoder(instr);
         assert_eq!(result, expected);
 
@@ -209,24 +188,10 @@ mod tests {
         let result = instruction_decoder(instr);
         assert_eq!(result, expected);
 
-        // Multiply unsigned
-        let binary_instruction = "00000010001100010011000010110011";
-        let instr = convert_binary_string_to_vector(binary_instruction);
-        let expected = "MULHU x1, x2, x3";
-        let result = instruction_decoder(instr);
-        assert_eq!(result, expected);
-
         // XOR
         let binary_instruction = "00000000001100010100000010110011";
         let instr = convert_binary_string_to_vector(binary_instruction);
         let expected = "XOR x1, x2, x3";
-        let result = instruction_decoder(instr);
-        assert_eq!(result, expected);
-
-        // Divide signed 
-        let binary_instruction = "00000010001100010100000010110011";
-        let instr = convert_binary_string_to_vector(binary_instruction);
-        let expected = "DIV x1, x2, x3";
         let result = instruction_decoder(instr);
         assert_eq!(result, expected);
 
@@ -237,13 +202,6 @@ mod tests {
         let result = instruction_decoder(instr);
         assert_eq!(result, expected);
 
-        // Divide unsigned
-        let binary_instruction = "00000010001100010101000010110011";
-        let instr = convert_binary_string_to_vector(binary_instruction);
-        let expected = "DIVU x1, x2, x3";
-        let result = instruction_decoder(instr);
-        assert_eq!(result, expected);
-
         // Shift Right Arithmetic
         let binary_instruction = "01000000001100010101000010110011";
         let instr = convert_binary_string_to_vector(binary_instruction);
@@ -251,10 +209,62 @@ mod tests {
         let result = instruction_decoder(instr);
         assert_eq!(result, expected);
 
-        // OR 
+        // OR
         let binary_instruction = "00000000001100010110000010110011";
         let instr = convert_binary_string_to_vector(binary_instruction);
         let expected = "OR x1, x2, x3";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // And
+        let binary_instruction = "00000000001100010111000010110011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "AND x1, x2, x3";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn multiplication_extension() {
+        // Multiply
+        let binary_instruction = "00000010001100010000000010110011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "MUL x1, x2, x3";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Multiply High Signed
+        let binary_instruction = "00000010001100010001000010110011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "MULH x1, x2, x3";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Multiply signed and unsigned
+        let binary_instruction = "00000010001100010010000010110011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "MULHSU x1, x2, x3";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Multiply unsigned
+        let binary_instruction = "00000010001100010011000010110011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "MULHU x1, x2, x3";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Divide signed
+        let binary_instruction = "00000010001100010100000010110011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "DIV x1, x2, x3";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Divide unsigned
+        let binary_instruction = "00000010001100010101000010110011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "DIVU x1, x2, x3";
         let result = instruction_decoder(instr);
         assert_eq!(result, expected);
 
@@ -265,13 +275,6 @@ mod tests {
         let result = instruction_decoder(instr);
         assert_eq!(result, expected);
 
-        // And 
-        let binary_instruction = "00000000001100010111000010110011";
-        let instr = convert_binary_string_to_vector(binary_instruction);
-        let expected = "AND x1, x2, x3";
-        let result = instruction_decoder(instr);   
-        assert_eq!(result, expected);
-
         // Remainder unsigned
         let binary_instruction = "00000010001100010111000010110011";
         let instr = convert_binary_string_to_vector(binary_instruction);
@@ -279,6 +282,4 @@ mod tests {
         let result = instruction_decoder(instr);
         assert_eq!(result, expected);
     }
-
-
 }
