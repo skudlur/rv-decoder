@@ -282,4 +282,84 @@ mod tests {
         let result = instruction_decoder(instr);
         assert_eq!(result, expected);
     }
+
+    #[test]
+    fn atmomic_instructions() {
+        // Load Reserved
+        let binary_instruction = "00010000001000011010000010101111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "LR.W x1, x3";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Store if reserved
+        let binary_instruction = "00011000000100011010000010101111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "SC.W x1, x3, x2";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Amoswap
+        let binary_instruction = "00001000000100011010000010101111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "AMOSWAP.W x1, x3, x2";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Amoadd
+        let binary_instruction = "00000000000100011010000010101111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "AMOADD.W x1, x3, x2";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Amoxor
+        let binary_instruction = "00100000000100011010000010101111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "AMOXOR.W x1, x3, x2";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Amoand
+        let binary_instruction = "01100000000100011010000010101111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "AMOAND.W x1, x3, x2";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Amoor
+        let binary_instruction = "01000000000100011010000010101111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "AMOOR.W x1, x3, x2";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Amomin
+        let binary_instruction = "10000000000100011010000010101111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "AMOMIN.W x1, x3, x2";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Amomax
+        let binary_instruction = "10100000000100011010000010101111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "AMOMAX.W x1, x3, x2";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Amomin unsigned
+        let binary_instruction = "11000000000100011010000010101111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "AMOMINU.W x1, x3, x2";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // Amomax unsigned
+        let binary_instruction = "11100000000100011010000010101111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "AMOMAXU.W x1, x3, x2";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+    }
 }
