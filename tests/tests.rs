@@ -225,6 +225,51 @@ mod tests {
     }
 
     #[test]
+    fn branch_instructions() {
+        // BEQ
+        let binary_instruction = "10110000101010011000101001100011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "BEQ x19, x10, -3308";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // BNE
+        let binary_instruction = "10110000101010011001101001100011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "BNE x19, x10, -3308";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+         
+        // BLT 
+        let binary_instruction = "10110000101010011100101001100011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "BLT x19, x10, -3308";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // BGE
+        let binary_instruction = "10110000101010011101101001100011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "BGE x19, x10, -3308";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // BLTU
+        let binary_instruction = "10110000101010011110101001100011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "BLTU x19, x10, -3308";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+
+        // BGEU
+        let binary_instruction = "10110000101010011111101001100011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "BGEU x19, x10, -3308";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+    }
+
+    #[test]
     fn multiplication_extension() {
         // Multiply
         let binary_instruction = "00000010001100010000000010110011";
