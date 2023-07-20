@@ -183,6 +183,105 @@ pub fn instruction_decoder(instr: Vec<String>) -> String {
             }
         }
 
+        "1100011" =>{
+            let funct3_slice = &instr[17..20];
+            let funct3_slice_joined = funct3_slice.join("");
+            let rs1_slice = &instr[12..17];
+            let rs1_slice_joined = rs1_slice.join("");
+            let rs2_slice = &instr[7..12];
+            let rs2_slice_joined = rs2_slice.join("");
+            let imm1_slice = &instr[0..7];
+            let imm2_slice = &instr[20..25];
+            let imm_slice_1 = imm1_slice[0].to_string(); // imm [12]
+            let imm_slice_2 = &imm1_slice[1..7]; // imm [10:5]
+            let imm_slice_2_joined = imm_slice_2.join("");
+            let imm_slice_3 = &imm2_slice[0..4]; // imm [4:1]
+            let imm_slice_3_joined = imm_slice_3.join("");
+            let imm_slice_4 = imm2_slice[4].to_string(); // imm [11]
+            let zero = "0".to_string();
+            let mut imm_final = imm_slice_1.clone() + &imm_slice_4 + &imm_slice_2_joined + &imm_slice_3_joined + &zero;
+
+            let rs1_bits = i32::from_str_radix(&rs1_slice_joined, 2).unwrap();
+            let rs2_bits = i32::from_str_radix(&rs2_slice_joined, 2).unwrap();
+            let mut imm_bits = i32::from_str_radix(&imm_final, 2).unwrap();
+
+            // Immediate generator/handler
+            if imm_slice_1 == "1" {
+                let mut x = 1;
+                loop {
+                    let mut twos = i32::pow(2, x);
+                    if (imm_bits as f32)/(twos as f32) < 1.0 {
+                        imm_bits = imm_bits - twos;
+                        break;
+                    }
+                    else {
+                        x = x + 1;
+                    }
+                }
+            }
+
+            match funct3_slice_joined.as_str() {
+                "000" => {      // Branch Equal
+                    println!("Branch Equal (BEQ) instruction decoded");
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("Immediate value: {}", imm_bits);
+                    println!("BEQ x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                    println!("--------------------------------");
+                    return format!("BEQ x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                }
+                "001" => {      // Branch Not Equal
+                    println!("Branch Not Equal (BNE) instruction decoded");
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("Immediate value: {}", imm_bits);
+                    println!("BNE x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                    println!("--------------------------------");
+                    return format!("BNE x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                }
+                "100" => {      // Branch Less Than
+                    println!("Branch Less Than (BLT) instruction decoded");
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("Immediate value: {}", imm_bits);
+                    println!("BLT x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                    println!("--------------------------------");
+                    return format!("BLT x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                }
+                "101" => {      // Branch Greater Than or Equal
+                    println!("Branch Greater Than or Equal (BGE) instruction decoded");
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("Immediate value: {}", imm_bits);
+                    println!("BGE x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                    println!("--------------------------------");
+                    return format!("BGE x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                }
+                "110" => {      // Branch Less Than Unsigned
+                    println!("Branch Less Than Unsigned (BLTU) instruction decoded");
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("Immediate value: {}", imm_bits);
+                    println!("BLTU x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                    println!("--------------------------------");
+                    return format!("BLTU x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                }
+                "111" => {      // Branch Greater Than or Equal Unsigned
+                    println!("Branch Greater Than or Equal Unsigned (BGEU) instruction decoded");
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("Immediate value: {}", imm_bits);
+                    println!("BGEU x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                    println!("--------------------------------");
+                    return format!("BGEU x{}, x{}, {}", rs1_bits, rs2_bits, imm_bits);
+                }
+                default => {
+                    panic!("Instruction format error!");
+                }
+            &_ => todo!()
+            }
+        }
+
         "0010011" => {      // Immediate type instructions
             let funct3_slice = &instr[17..20];
             let funct3_slice_joined = funct3_slice.join("");
