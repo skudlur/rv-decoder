@@ -772,6 +772,127 @@ pub fn instruction_decoder(instr: Vec<String>) -> String {
         }
 
         "0101111" => {
+            let funct5_slice = &instr[0..5];
+            let funct5_slice_joined = funct5_slice.join("");
+            let func3_slice = &instr[17..20];
+            let func3_slice_joined = func3_slice.join("");
+            let aq_slice = &instr[5].to_string();
+            let rl_slice = &instr[6].to_string();
+            let rs2_slice = &instr[7..12];
+            let rs2_slice_joined = rs2_slice.join("");
+            let rs1_slice = &instr[12..17];
+            let rs1_slice_joined = rs1_slice.join("");
+            let rd_slice = &instr[20..25];
+            let rd_slice_joined = rd_slice.join("");
+
+            let rs1_bits = i32::from_str_radix(&rs1_slice_joined, 2).unwrap();
+            let rs2_bits = i32::from_str_radix(&rs2_slice_joined, 2).unwrap();
+            let mut rd_bits = i32::from_str_radix(&rd_slice_joined, 2).unwrap();
+
+            match funct5_slice_joined.as_str() {
+                "00010" => {      // Load Word
+                    println!("Load Word (LR.W) instruction decoded");
+                    println!("Destination Register address: x{}", rd_bits);
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("LR.W x{}, x{}", rd_bits, rs1_bits);
+                    println!("--------------------------------");
+                    return format!("LR.W x{}, x{}", rd_bits, rs1_bits);
+                }
+                "00011" =>{       // Store Word
+                    println!("Store Word (SC.W) instruction decoded");
+                    println!("Destination Register address: x{}", rd_bits);
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("SC.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                    println!("--------------------------------");
+                    return format!("SC.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                }
+                "00001" =>{       // Atomic Swap
+                    println!("Atomic Swap (AMOSWAP.W) instruction decoded");
+                    println!("Destination Register address: x{}", rd_bits);
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("AMOSWAP.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                    println!("--------------------------------");
+                    return format!("AMOSWAP.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                }
+                "00000" =>{       // Atomic Add
+                    println!("Atomic Add (AMOADD.W) instruction decoded");
+                    println!("Destination Register address: x{}", rd_bits);
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("AMOADD.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                    println!("--------------------------------");
+                    return format!("AMOADD.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                }
+                "00100" =>{       // Atomic XOR
+                    println!("Atomic XOR (AMOXOR.W) instruction decoded");
+                    println!("Destination Register address: x{}", rd_bits);
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("AMOXOR.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                    println!("--------------------------------");
+                    return format!("AMOXOR.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                }
+                "01100" =>{       // Atomic AND
+                    println!("Atomic AND (AMOAND.W) instruction decoded");
+                    println!("Destination Register address: x{}", rd_bits);
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("AMOAND.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                    println!("--------------------------------");
+                    return format!("AMOAND.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                }
+                "01000" =>{       // Atomic OR
+                    println!("Atomic OR (AMOOR.W) instruction decoded");
+                    println!("Destination Register address: x{}", rd_bits);
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("AMOOR.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                    println!("--------------------------------");
+                    return format!("AMOOR.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                }
+                "10000" =>{       // Atomic Minimum
+                    println!("Atomic Minimum (AMOMIN.W) instruction decoded");
+                    println!("Destination Register address: x{}", rd_bits);
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("AMOMIN.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                    println!("--------------------------------");
+                    return format!("AMOMIN.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                }
+                "10100" =>{       // Atomic Maximum
+                    println!("Atomic Maximum (AMOMAX.W) instruction decoded");
+                    println!("Destination Register address: x{}", rd_bits);
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("AMOMAX.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                    println!("--------------------------------");
+                    return format!("AMOMAX.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                }
+                "11000" =>{       // Atomic Unsigned Minimum
+                    println!("Atomic Unsigned Minimum (AMOMINU.W) instruction decoded");
+                    println!("Destination Register address: x{}", rd_bits);
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("AMOMINU.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                    println!("--------------------------------");
+                    return format!("AMOMINU.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                }
+                "11100" =>{       // Atomic Unsigned Maximum
+                    println!("Atomic Unsigned Maximum (AMOMAXU.W) instruction decoded");
+                    println!("Destination Register address: x{}", rd_bits);
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("Register Two address: x{}", rs2_bits);
+                    println!("AMOMAXU.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                    println!("--------------------------------");
+                    return format!("AMOMAXU.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
+                }
+                &_ => todo!()
+            }
+
+            let string = "sdfd".to_string();
+            return string;
             
         }
         default => {
