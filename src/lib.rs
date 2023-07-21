@@ -16,6 +16,36 @@ pub fn convert_binary_string_to_vector(binary_string: &str) -> Vec<String> {
     return vector;
   }
 
+fn rm_decoder(rm_slice_joined: &str) -> String {
+    match rm_slice_joined {
+        "000" => {
+            return "RNE".to_string(); // Round to nearest, ties to even
+        }
+        "001" => {
+            return "RTZ".to_string(); // Round towards zero
+        }
+        "010" => {
+            return "RDN".to_string(); // Round down (towards negative infinity)
+        }
+        "011" => {
+            return "RUP".to_string(); // Round up (towards positive infinity)
+        }
+        "100" => {
+            return "RMM".to_string(); // Round to nearest, ties to max magnitude
+        }
+        "101" => {
+            return "Invalid".to_string();
+        }
+        "110" => {
+            return "Invalid".to_string();
+        }
+        "111" => {
+            return "DYN".to_string(); // Dynamic rounding mode 
+        }
+        &_ => todo!()
+    }
+}
+
 
 pub fn instruction_decoder(instr: Vec<String>) -> String {
     /*
@@ -897,12 +927,393 @@ pub fn instruction_decoder(instr: Vec<String>) -> String {
                     return format!("AMOMAXU.W x{}, x{}, x{}",rd_bits, rs2_bits, rs1_bits);
                 }
                 &_ => todo!()
+            }            
+        }
+
+        "1000011" => {
+            let rs3_slice = &instr[0..5];
+            let rs3_slice_joined = rs3_slice.join("");
+            let funct3_slice = &instr[5..7];
+            let funct3_slice_joined = funct3_slice.join("");
+            let rs2_slice = &instr[7..12];
+            let rs2_slice_joined = rs2_slice.join("");
+            let rs1_slice = &instr[12..17];
+            let rs1_slice_joined = rs1_slice.join("");
+            let rm_slice = &instr[17..20];
+            let rm_slice_joined = rm_slice.join("");
+            let rd_slice = &instr[20..25];
+            let rd_slice_joined = rd_slice.join("");
+           
+            let rs1_bits = i32::from_str_radix(&rs1_slice_joined, 2).unwrap();
+            let rs2_bits = i32::from_str_radix(&rs2_slice_joined, 2).unwrap();
+            let rs3_bits = i32::from_str_radix(&rs3_slice_joined, 2).unwrap();
+            let mut rd_bits = i32::from_str_radix(&rd_slice_joined, 2).unwrap();
+
+            println!("Floating Point Addition (FMADD.S) instruction decoded");
+            println!("Destination Register address: f{}", rd_bits);
+            println!("Register One address: f{}", rs1_bits);
+            println!("Register Two address: f{}", rs2_bits);
+            println!("Register Three address: f{}", rs3_bits);
+            println!("FMADD.S f{}, f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rs3_bits, rm_decoder(&rm_slice_joined));
+            println!("--------------------------------");
+            return format!("FMADD.S f{}, f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rs3_bits, rm_decoder(&rm_slice_joined));
+        }
+
+        "1000111" => {
+            let rs3_slice = &instr[0..5];
+            let rs3_slice_joined = rs3_slice.join("");
+            let funct3_slice = &instr[5..7];
+            let funct3_slice_joined = funct3_slice.join("");
+            let rs2_slice = &instr[7..12];
+            let rs2_slice_joined = rs2_slice.join("");
+            let rs1_slice = &instr[12..17];
+            let rs1_slice_joined = rs1_slice.join("");
+            let rm_slice = &instr[17..20];
+            let rm_slice_joined = rm_slice.join("");
+            let rd_slice = &instr[20..25];
+            let rd_slice_joined = rd_slice.join("");
+           
+            let rs1_bits = i32::from_str_radix(&rs1_slice_joined, 2).unwrap();
+            let rs2_bits = i32::from_str_radix(&rs2_slice_joined, 2).unwrap();
+            let rs3_bits = i32::from_str_radix(&rs3_slice_joined, 2).unwrap();
+            let mut rd_bits = i32::from_str_radix(&rd_slice_joined, 2).unwrap();
+
+            println!("Floating Point Subtraction (FMSUB.S) instruction decoded");
+            println!("Destination Register address: f{}", rd_bits);
+            println!("Register One address: f{}", rs1_bits);
+            println!("Register Two address: f{}", rs2_bits);
+            println!("Register Three address: f{}", rs3_bits);
+            println!("FMSUB.S f{}, f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rs3_bits, rm_decoder(&rm_slice_joined));
+            println!("--------------------------------");
+            return format!("FMSUB.S f{}, f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rs3_bits, rm_decoder(&rm_slice_joined));
+        }
+
+        "1001011" => {
+            let rs3_slice = &instr[0..5];
+            let rs3_slice_joined = rs3_slice.join("");
+            let funct3_slice = &instr[5..7];
+            let funct3_slice_joined = funct3_slice.join("");
+            let rs2_slice = &instr[7..12];
+            let rs2_slice_joined = rs2_slice.join("");
+            let rs1_slice = &instr[12..17];
+            let rs1_slice_joined = rs1_slice.join("");
+            let rm_slice = &instr[17..20];
+            let rm_slice_joined = rm_slice.join("");
+            let rd_slice = &instr[20..25];
+            let rd_slice_joined = rd_slice.join("");
+           
+            let rs1_bits = i32::from_str_radix(&rs1_slice_joined, 2).unwrap();
+            let rs2_bits = i32::from_str_radix(&rs2_slice_joined, 2).unwrap();
+            let rs3_bits = i32::from_str_radix(&rs3_slice_joined, 2).unwrap();
+            let mut rd_bits = i32::from_str_radix(&rd_slice_joined, 2).unwrap();
+
+            println!("Floating Point Negative Subtraction (FNMSUB.S) instruction decoded");
+            println!("Destination Register address: f{}", rd_bits);
+            println!("Register One address: f{}", rs1_bits);
+            println!("Register Two address: f{}", rs2_bits);
+            println!("Register Three address: f{}", rs3_bits);
+            println!("FNMSUB.S f{}, f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rs3_bits, rm_decoder(&rm_slice_joined));
+            println!("--------------------------------");
+            return format!("FNMSUB.S f{}, f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rs3_bits, rm_decoder(&rm_slice_joined));
+        }
+
+        "1001111" => {
+            let rs3_slice = &instr[0..5];
+            let rs3_slice_joined = rs3_slice.join("");
+            let funct3_slice = &instr[5..7];
+            let funct3_slice_joined = funct3_slice.join("");
+            let rs2_slice = &instr[7..12];
+            let rs2_slice_joined = rs2_slice.join("");
+            let rs1_slice = &instr[12..17];
+            let rs1_slice_joined = rs1_slice.join("");
+            let rm_slice = &instr[17..20];
+            let rm_slice_joined = rm_slice.join("");
+            let rd_slice = &instr[20..25];
+            let rd_slice_joined = rd_slice.join("");
+           
+            let rs1_bits = i32::from_str_radix(&rs1_slice_joined, 2).unwrap();
+            let rs2_bits = i32::from_str_radix(&rs2_slice_joined, 2).unwrap();
+            let rs3_bits = i32::from_str_radix(&rs3_slice_joined, 2).unwrap();
+            let mut rd_bits = i32::from_str_radix(&rd_slice_joined, 2).unwrap();
+
+            println!("Floating Point Negative Addition (FNMADD.S) instruction decoded");
+            println!("Destination Register address: f{}", rd_bits);
+            println!("Register One address: f{}", rs1_bits);
+            println!("Register Two address: f{}", rs2_bits);
+            println!("Register Three address: f{}", rs3_bits);
+            println!("FNMADD.S f{}, f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rs3_bits, rm_decoder(&rm_slice_joined));
+            println!("--------------------------------");
+            return format!("FNMADD.S f{}, f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rs3_bits, rm_decoder(&rm_slice_joined));
+        }
+
+        "1010011" => {
+            let rs3_slice = &instr[0..5];
+            let rs3_slice_joined = rs3_slice.join("");
+            let funct3_slice = &instr[5..7];
+            let funct3_slice_joined = funct3_slice.join("");
+            let rs2_slice = &instr[7..12];
+            let rs2_slice_joined = rs2_slice.join("");
+            let rs1_slice = &instr[12..17];
+            let rs1_slice_joined = rs1_slice.join("");
+            let rm_slice = &instr[17..20];
+            let rm_slice_joined = rm_slice.join("");
+            let rd_slice = &instr[20..25];
+            let rd_slice_joined = rd_slice.join("");
+           
+            let rs1_bits = i32::from_str_radix(&rs1_slice_joined, 2).unwrap();
+            let rs2_bits = i32::from_str_radix(&rs2_slice_joined, 2).unwrap();
+            let mut rd_bits = i32::from_str_radix(&rd_slice_joined, 2).unwrap();
+
+            match rs3_slice_joined.as_str() {
+                "00000" => {
+                    println!("Floating Point Negative Addition (FADD.S) instruction decoded");
+                    println!("Destination Register address: f{}", rd_bits);
+                    println!("Register One address: f{}", rs1_bits);
+                    println!("Register Two address: f{}", rs2_bits);
+                    println!("FADD.S f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rm_decoder(&rm_slice_joined));
+                    println!("--------------------------------");
+                    return format!("FADD.S f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rm_decoder(&rm_slice_joined));
+                }
+                "00001" => {
+                    println!("Floating Point Subtraction (FSUB.S) instruction decoded");
+                    println!("Destination Register address: f{}", rd_bits);
+                    println!("Register One address: f{}", rs1_bits);
+                    println!("Register Two address: f{}", rs2_bits);
+                    println!("FSUB.S f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rm_decoder(&rm_slice_joined));
+                    println!("--------------------------------");
+                    return format!("FSUB.S f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rm_decoder(&rm_slice_joined));
+                }
+                "00010" => {
+                    println!("Floating Point Multiplication (FMUL.S) instruction decoded");
+                    println!("Destination Register address: f{}", rd_bits);
+                    println!("Register One address: f{}", rs1_bits);
+                    println!("Register Two address: f{}", rs2_bits);
+                    println!("FMUL.S f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rm_decoder(&rm_slice_joined));
+                    println!("--------------------------------");
+                    return format!("FMUL.S f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rm_decoder(&rm_slice_joined));
+                }
+                "00011" => {
+                    println!("Floating Point Division (FDIV.S) instruction decoded");
+                    println!("Destination Register address: f{}", rd_bits);
+                    println!("Register One address: f{}", rs1_bits);
+                    println!("Register Two address: f{}", rs2_bits);
+                    println!("FDIV.S f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rm_decoder(&rm_slice_joined));
+                    println!("--------------------------------");
+                    return format!("FDIV.S f{}, f{}, f{}, {}", rd_bits, rs1_bits, rs2_bits, rm_decoder(&rm_slice_joined));
+                }
+                "01011" => {
+                    println!("Floating Point Square Root (FSQRT.S) instruction decoded");
+                    println!("Destination Register address: f{}", rd_bits);
+                    println!("Register One address: f{}", rs1_bits);
+                    println!("FSQRT.S f{}, f{}, {}", rd_bits, rs1_bits, rm_decoder(&rm_slice_joined));
+                    println!("--------------------------------");
+                    return format!("FSQRT.S f{}, f{}, {}", rd_bits, rs1_bits, rm_decoder(&rm_slice_joined));
+                }
+                "00100" => {
+                    match rm_slice_joined.as_str() {
+                            "000" => {
+                                println!("Floating Point Sign Injection (FSGNJ.S) instruction decoded");
+                                println!("Destination Register address: f{}", rd_bits);
+                                println!("Register One address: f{}", rs1_bits);
+                                println!("Register Two address: f{}", rs2_bits);
+                                println!("FSGNJ.S f{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits); 
+                                println!("--------------------------------");
+                                return format!("FSGNJ.S f{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits);
+                            }
+                            "001" => {
+                                println!("Floating Point Sign Injection (FSGNJN.S) instruction decoded");
+                                println!("Destination Register address: f{}", rd_bits);
+                                println!("Register One address: f{}", rs1_bits);
+                                println!("Register Two address: f{}", rs2_bits);
+                                println!("FSGNJN.S f{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits); 
+                                println!("--------------------------------");
+                                return format!("FSGNJN.S f{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits);
+                            }
+                            "010" => {
+                                println!("Floating Point Sign Injection (FSGNJX.S) instruction decoded");
+                                println!("Destination Register address: f{}", rd_bits);
+                                println!("Register One address: f{}", rs1_bits);
+                                println!("Register Two address: f{}", rs2_bits);
+                                println!("FSGNJX.S f{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits); 
+                                println!("--------------------------------");
+                                return format!("FSGNJX.S f{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits);
+                            }
+                            &_ => todo!()
+                    }
+                }
+                "00101" => {
+                    match rm_slice_joined.as_str() {
+                        "000" => {
+                            println!("Floating Point Minimum (FMIN.S) instruction decoded");
+                            println!("Destination Register address: f{}", rd_bits);
+                            println!("Register One address: f{}", rs1_bits);
+                            println!("Register Two address: f{}", rs2_bits);
+                            println!("FMIN.S f{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                            return format!("FMIN.S f{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits);
+                        }
+                        "001" => {
+                            println!("Floating Point Maximum (FMAX.S) instruction decoded");
+                            println!("Destination Register address: f{}", rd_bits);
+                            println!("Register One address: f{}", rs1_bits);
+                            println!("Register Two address: f{}", rs2_bits);
+                            println!("FMAX.S f{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                            return format!("FMAX.S f{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits);
+                        }
+                        &_ => todo!()
+                    }
+                }
+                "11000" => {
+                    match rs2_slice_joined.as_str() {
+                        "00000" => {
+                            println!("Floating Point Conversion to Integer (FCVT.W.S) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: f{}", rs1_bits);
+                            println!("FCVT.W.S x{}, f{}, {}", rd_bits, rs1_bits, rm_decoder(&rm_slice_joined));
+                            println!("--------------------------------");
+                            return format!("FCVT.W.S x{}, f{}, {}", rd_bits, rs1_bits, rm_decoder(&rm_slice_joined));
+                        }
+                        "00001" => {
+                            println!("Floating Point Conversion to Integer (FCVT.WU.S) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: f{}", rs1_bits);
+                            println!("FCVT.WU.S x{}, f{}, {}", rd_bits, rs1_bits, rm_decoder(&rm_slice_joined));
+                            println!("--------------------------------");
+                            return format!("FCVT.WU.S x{}, f{}, {}", rd_bits, rs1_bits, rm_decoder(&rm_slice_joined));
+                        }
+                        &_ => todo!()
+                    }
+                }
+                "11100" => {
+                    match rm_slice_joined.as_str() {
+                    "000" => {
+                        println!("Floating Point Conversion to Integer (FMV.X.W) instruction decoded");
+                        println!("Destination Register address: x{}", rd_bits);
+                        println!("Register One address: f{}", rs1_bits);
+                        println!("FMV.X.W x{}, f{}", rd_bits, rs1_bits);
+                        println!("--------------------------------");
+                        return format!("FMV.X.W x{}, f{}", rd_bits, rs1_bits);
+                    }
+                    "001" => {
+                        println!("Floating Point Class (FCLASS.S) instruction decoded");
+                        println!("Destination Register address: x{}", rd_bits);
+                        println!("Register One address: f{}", rs1_bits);
+                        println!("FCLASS.S x{}, f{}", rd_bits, rs1_bits);
+                        println!("--------------------------------");
+                        return format!("FCLASS.S x{}, f{}", rd_bits, rs1_bits);
+                    }
+                    &_ => todo!()
+                    }
+                }
+                "10100" => {
+                    match rm_slice_joined.as_str() {
+                        "000" => {
+                            println!("Floating Point Conversion to Integer (FLE.S) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: f{}", rs1_bits);
+                            println!("Register Two address: f{}", rs2_bits);
+                            println!("FLE.S x{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                            return format!("FLE.S x{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits);
+                        }
+                        "010" => {
+                            println!("Floating Point Conversion to Integer (FEQ.S) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: f{}", rs1_bits);
+                            println!("Register Two address: f{}", rs2_bits);
+                            println!("FEQ.S x{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                            return format!("FEQ.S x{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits);
+                        }
+                        "001" => {
+                            println!("Floating Point Conversion to Integer (FLT.S) instruction decoded");
+                            println!("Destination Register address: x{}", rd_bits);
+                            println!("Register One address: f{}", rs1_bits);
+                            println!("Register Two address: f{}", rs2_bits);
+                            println!("FLT.S x{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits);
+                            println!("--------------------------------");
+                            return format!("FLT.S x{}, f{}, f{}", rd_bits, rs1_bits, rs2_bits);
+                        }
+                        &_ => todo!()
+                    }
+                }
+                "11010" => {
+                    match rs2_slice_joined.as_str() {
+                        "00000" => {
+                            println!("Floating Point Conversion to Integer (FCVT.S.W) instruction decoded");
+                            println!("Destination Register address: f{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("FCVT.S.W f{}, x{}, {}", rd_bits, rs1_bits, rm_decoder(&rm_slice_joined));
+                            println!("--------------------------------");
+                            return format!("FCVT.S.W f{}, x{}, {}", rd_bits, rs1_bits, rm_decoder(&rm_slice_joined));
+                        }
+                        "00001" => {
+                            println!("Floating Point Conversion to Integer (FCVT.S.WU) instruction decoded");
+                            println!("Destination Register address: f{}", rd_bits);
+                            println!("Register One address: x{}", rs1_bits);
+                            println!("FCVT.S.WU f{}, x{}, {}", rd_bits, rs1_bits, rm_decoder(&rm_slice_joined));
+                            println!("--------------------------------");
+                            return format!("FCVT.S.WU f{}, x{}, {}", rd_bits, rs1_bits, rm_decoder(&rm_slice_joined));
+                        }
+                        &_ => todo!()
+                    }
+                }
+                "11110" => {
+                    println!("Floating Point Conversion to Integer (FMV.W.X) instruction decoded");
+                    println!("Destination Register address: f{}", rd_bits);
+                    println!("Register One address: x{}", rs1_bits);
+                    println!("FMV.W.X f{}, x{}", rd_bits, rs1_bits);
+                    println!("--------------------------------");
+                    return format!("FMV.W.X f{}, x{}", rd_bits, rs1_bits);
+                }
+                &_ => todo!()
             }
 
-            let string = "sdfd".to_string();
-            return string;
-            
         }
+        "0000111" => {
+            let imm_slice = &instr[0..12];
+            let imm_slice_joined = imm_slice.join("");
+            let rs1_slice = &instr[12..17];
+            let rs1_slice_joined = rs1_slice.join("");
+            let rd_slice = &instr[20..25];
+            let rd_slice_joined = rd_slice.join("");
+
+            let mut rd_bits = i32::from_str_radix(&rd_slice_joined, 2).unwrap();
+            let rs1_bits = i32::from_str_radix(&rs1_slice_joined, 2).unwrap();
+            let imm_bits = i32::from_str_radix(&imm_slice_joined, 2).unwrap();
+
+            println!("Floating Point Load Word (FLW) instruction decoded");
+            println!("Destination Register address: f{}", rd_bits);
+            println!("Register One address: x{}", rs1_bits);
+            println!("FLW f{}, {}(x{})", rd_bits, imm_bits, rs1_bits);
+            println!("--------------------------------");
+            return format!("FLW f{}, {}(x{})", rd_bits, imm_bits, rs1_bits);
+        }
+        "0100111" => {
+            let rs2_slice = &instr[7..12];
+            let rs2_slice_joined = rs2_slice.join("");
+            let rs1_slice = &instr[12..17];
+            let rs1_slice_joined = rs1_slice.join("");
+            let imm1_slice = &instr[0..7];
+            let imm1_slice_joined = imm1_slice.join("");
+            let imm2_slice = &instr[20..25];
+            let imm2_slice_joined = imm2_slice.join("");
+            let imm_slice_joined = imm1_slice_joined + &imm2_slice_joined;
+
+            let mut imm_bits = i32::from_str_radix(&imm_slice_joined, 2).unwrap();
+            let rs1_bits = i32::from_str_radix(&rs1_slice_joined, 2).unwrap();
+            let rs2_bits = i32::from_str_radix(&rs2_slice_joined, 2).unwrap();
+
+            println!("Floating Point Store Word (FSW) instruction decoded");
+            println!("Register One address: f{}", rs1_bits);
+            println!("Register Two address: x{}", rs2_bits);
+            println!("Immediates: {}", imm_bits);
+            println!("FSW f{}, {}(x{})", rs2_bits, imm_bits, rs1_bits);
+            println!("--------------------------------");
+            return format!("FSW f{}, {}(x{})", rs2_bits, imm_bits, rs1_bits);
+        }
+
         default => {
             panic!("Opcode not found!");
         }
