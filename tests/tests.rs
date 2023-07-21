@@ -320,12 +320,12 @@ mod tests {
         let result = instruction_decoder(instr);
         assert_eq!(result, expected);
 
-        // // Remainder unsigned
-        // let binary_instruction = "00000010001100010111000010110011";
-        // let instr = convert_binary_string_to_vector(binary_instruction);
-        // let expected = "REMU x1, x2, x3";
-        // let result = instruction_decoder(instr);
-        // assert_eq!(result, expected);
+        // Remainder unsigned
+        let binary_instruction = "00000010001100010111000010110011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "REMU x1, x2, x3";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
     }
 
     // #[test]
