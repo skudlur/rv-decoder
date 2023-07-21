@@ -593,188 +593,188 @@ mod tests {
         assert_eq!(result, expected);
     }
 
-    // #[test]
-    // fn d_extension_instructions() {
-    //     // FMADD.D
-    //     let binary_instruction = "00001011001011000001001111000011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FMADD.D f7, f24, f18, f1, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+    #[test]
+    fn d_extension_instructions() {
+        // FMADD.D
+        let binary_instruction = "00001011001011000001001111000011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FMADD.D f7, f24, f18, f1, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FMSUB.D
-    //     let binary_instruction = "00001011001011000001001111000111";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FMSUB.D f7, f24, f18, f1, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FMSUB.D
+        let binary_instruction = "00001011001011000001001111000111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FMSUB.D f7, f24, f18, f1, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FNMADD.D
-    //     let binary_instruction = "00001011001011000001001111001111";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FNMADD.D f7, f24, f18, f1, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FNMADD.D
+        let binary_instruction = "00001011001011000001001111001111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FNMADD.D f7, f24, f18, f1, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FNMSUB.D
-    //     let binary_instruction = "00001011001011000001001111001011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FNMSUB.D f7, f24, f18, f1, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FNMSUB.D
+        let binary_instruction = "00001011001011000001001111001011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FNMSUB.D f7, f24, f18, f1, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FADD.D
-    //     let binary_instruction = "00000011001011000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FADD.D f7, f24, f18, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FADD.D
+        let binary_instruction = "00000011001011000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FADD.D f7, f24, f18, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FSUB.D
-    //     let binary_instruction = "00001011001011000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FSUB.D f7, f24, f18, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FSUB.D
+        let binary_instruction = "00001011001011000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FSUB.D f7, f24, f18, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FMUL.D
-    //     let binary_instruction = "00010011001011000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FMUL.D f7, f24, f18, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FMUL.D
+        let binary_instruction = "00010011001011000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FMUL.D f7, f24, f18, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FDIV.D
-    //     let binary_instruction = "00011011001011000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FDIV.D f7, f24, f18, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FDIV.D
+        let binary_instruction = "00011011001011000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FDIV.D f7, f24, f18, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FSQRT.D
-    //     let binary_instruction = "01011011001011000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FSQRT.D f7, f24, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FSQRT.D
+        let binary_instruction = "01011011001011000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FSQRT.D f7, f24, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FSGNJ.D
-    //     let binary_instruction = "00100011001011000000001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FSGNJ.D f7, f24, f18";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FSGNJ.D
+        let binary_instruction = "00100011001011000000001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FSGNJ.D f7, f24, f18";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FSGNJN.D
-    //     let binary_instruction = "00100011001011000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FSGNJN.D f7, f24, f18";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FSGNJN.D
+        let binary_instruction = "00100011001011000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FSGNJN.D f7, f24, f18";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FSGNJX.D
-    //     let binary_instruction = "00100011001011000010001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FSGNJX.D f7, f24, f18";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FSGNJX.D
+        let binary_instruction = "00100011001011000010001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FSGNJX.D f7, f24, f18";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FMIN.D
-    //     let binary_instruction = "00101011001011000000001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FMIN.D f7, f24, f18";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FMIN.D
+        let binary_instruction = "00101011001011000000001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FMIN.D f7, f24, f18";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FMAX.D
-    //     let binary_instruction = "00101011001011000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FMAX.D f7, f24, f18";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FMAX.D
+        let binary_instruction = "00101011001011000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FMAX.D f7, f24, f18";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FCVT.S.D
-    //     let binary_instruction = "01000000000111000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FCVT.S.D f7, f24, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FCVT.S.D
+        let binary_instruction = "01000000000111000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FCVT.S.D f7, f24, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FCVT.D.S
-    //     let binary_instruction = "01000010000011000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FCVT.D.S f7, f24, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FCVT.D.S
+        let binary_instruction = "01000010000011000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FCVT.D.S f7, f24, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FEQ.D
-    //     let binary_instruction = "10100010000011000010001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FEQ.D x7, f24, f0";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FEQ.D
+        let binary_instruction = "10100010000011000010001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FEQ.D x7, f24, f0";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FLT.D
-    //     let binary_instruction = "10100010000011000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FLT.D x7, f24, f0";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FLT.D
+        let binary_instruction = "10100010000011000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FLT.D x7, f24, f0";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FLE.D
-    //     let binary_instruction = "10100010000011000000001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FLE.D x7, f24, f0";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FLE.D
+        let binary_instruction = "10100010000011000000001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FLE.D x7, f24, f0";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FCLASS.D
-    //     let binary_instruction = "11100010000011000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FCLASS.D x7, f24";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FCLASS.D
+        let binary_instruction = "11100010000011000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FCLASS.D x7, f24";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FCVT.W.D
-    //     let binary_instruction = "11000010000011000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FCVT.W.D x7, f24, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FCVT.W.D
+        let binary_instruction = "11000010000011000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FCVT.W.D x7, f24, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FCVT.WU.D
-    //     let binary_instruction = "11000010000111000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FCVT.WU.D x7, f24, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FCVT.WU.D
+        let binary_instruction = "11000010000111000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FCVT.WU.D x7, f24, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FCVT.D.W
-    //     let binary_instruction = "11010010000011000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FCVT.D.W f7, x24, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FCVT.D.W
+        let binary_instruction = "11010010000011000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FCVT.D.W f7, x24, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FCVT.D.WU
-    //     let binary_instruction = "11010010000111000001001111010011";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FCVT.D.WU f7, x24, RTZ";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FCVT.D.WU
+        let binary_instruction = "11010010000111000001001111010011";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FCVT.D.WU f7, x24, RTZ";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FLD
-    //     let binary_instruction = "00000110010101001011001010000111";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FLD f5, 101(x9)";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+        // FLD
+        let binary_instruction = "00000110010101001011001010000111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FLD f5, 101(x9)";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
-    //     // FSD
-    //     let binary_instruction = "00000110110101000011000110100111";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "FSD f13, 99(x8)";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
-    // }
+        // FSD
+        let binary_instruction = "00000110110101000011000110100111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "FSD f13, 99(x8)";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
+    }
 }
