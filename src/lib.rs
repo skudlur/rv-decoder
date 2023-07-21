@@ -62,12 +62,20 @@ pub fn instruction_decoder(instr: Vec<String>) -> String {
      * 0-----------------------19 20-----24 25--------31
      * /imm[20|10:1|11|19:12]/      /rd/      /opcode/ 
      *                               
-     * RV32A Atomic Instruction Set
+     * 
+     * RV32A Atomic Instruction Breakdown
      * 
      * 31--------27 26----- 25-----  24-----20 19------15 14-------12 11------7 6--------0
      *   /func5/      /aq/    /rl/     /rs2/     /rs1/      /func3/      /rd/    /opcode/
      * 0---------4  5------ 6------  7------11 12------16 17-------19 20-----24 25-------31
      *   /func5/      /aq/    /rl/     /rs2/     /rs1/      /func3/      /rd/    /opcode/
+     * 
+     * RV32F Floating Point Instruction Breakdown
+     * 
+     * 31------27 26----25  24-----20 19------15 14----12 11----7 6--------0
+     *   /rs3/      /00/      /rs2/     /rs1/      /rm/     /rd/   /opcode/
+     * 0-------4  5-----6  7------11 12------16 17-----19 20----24 25-------31
+     *  /rs3/      /00/      /rs2/     /rs1/      /rm/     /rd/     /opcode/
      */
 
     let opcode_slice = &instr[25..];    // opcode field
