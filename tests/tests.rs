@@ -328,14 +328,14 @@ mod tests {
         assert_eq!(result, expected);
     }
 
-    // #[test]
-    // fn atmomic_instructions() {
-    //     // Load Reserved
-    //     let binary_instruction = "00010000001000011010000010101111";
-    //     let instr = convert_binary_string_to_vector(binary_instruction);
-    //     let expected = "LR.W x1, x3";
-    //     let result = instruction_decoder(instr);
-    //     assert_eq!(result, expected);
+    #[test]
+    fn atmomic_instructions() {
+        // Load Reserved
+        let binary_instruction = "00010000001000011010000010101111";
+        let instr = convert_binary_string_to_vector(binary_instruction);
+        let expected = "LR.W x1, x3";
+        let result = instruction_decoder(instr);
+        assert_eq!(result, expected);
 
     //     // Store if reserved
     //     let binary_instruction = "00011000000100011010000010101111";
@@ -406,7 +406,7 @@ mod tests {
     //     let expected = "AMOMAXU.W x1, x3, x2";
     //     let result = instruction_decoder(instr);
     //     assert_eq!(result, expected);
-    // }
+    }
 
     // #[test]
     // fn floating_point_instructions() {
