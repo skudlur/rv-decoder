@@ -1678,21 +1678,6 @@ pub fn instruction_decoder(instr: Vec<String>) -> String {
                 &_ => todo!()
             }
         }
-        // "0000111" => {
-        //     let imm_slice = &instr[0..12];
-        //     let imm_slice_joined = imm_slice.join("");
-        //     let rs1_slice = &instr[12..17];
-        //     let rs1_slice_joined = rs1_slice.join("");
-        //     let rd_slice = &instr[20..25];
-        //     let rd_slice_joined = rd_slice.join("");
-
-        //     let mut rd_bits = i32::from_str_radix(&rd_slice_joined, 2).unwrap();
-        //     let rs1_bits = i32::from_str_radix(&rs1_slice_joined, 2).unwrap();
-        //     let imm_bits = i32::from_str_radix(&imm_slice_joined, 2).unwrap();
-
-            
-        // }
-
         default => {
             panic!("Opcode not found!");
         }
